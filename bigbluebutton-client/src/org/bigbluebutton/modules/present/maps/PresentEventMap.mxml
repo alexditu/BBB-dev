@@ -66,11 +66,15 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 	</EventHandlers>
 	
 	<EventHandlers type="{UploadEvent.CLOSE_UPLOAD_WINDOW}" >
-		<MethodInvoker generator="{PresentManager}" method="handleCloseUploadWindow" />
+		<MethodInvoker generator="{PresentManager}" method="handleCloseUploadWindow" arguments="{event}" />
 	</EventHandlers>
 		
 	<EventHandlers type="{UploadEvent.START_UPLOAD}">
 		<MethodInvoker generator="{PresentProxy}" method="startUpload" arguments="{event}" />
+	</EventHandlers>
+
+	<EventHandlers type="{UploadEvent.START_DOWNLOAD}">
+		<MethodInvoker generator="{PresentProxy}" method="startDownload" arguments="{event}" />
 	</EventHandlers>
 	
 	<EventHandlers type="{PresenterCommands.GOTO_SLIDE}" >

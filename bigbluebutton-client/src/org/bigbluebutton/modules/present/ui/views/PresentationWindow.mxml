@@ -144,6 +144,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 			
 			private var keyCombos:Object;
 			private var localDispatcher:Dispatcher = new Dispatcher();
+
+			public var fileToSave:String;
 			
 			private function init():void{
 				presentOptions = new PresentOptions();
@@ -626,6 +628,31 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 			}
 
+		public function saveFile():void {
+			trace ("Save file btn clicked! FileToSave = " + fileToSave);
+			var dEvent:UploadEvent = new UploadEvent(UploadEvent.START_DOWNLOAD);
+			trace ("debug 1");
+	        dEvent.presentationName = fileToSave;
+	        trace ("debug 2");
+	        var gDispatcher:Dispatcher = new Dispatcher();
+	        trace ("debug 3");
+	        gDispatcher.dispatchEvent(dEvent);
+	        trace ("debug 4");
+			//dispatchEvent(new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW))
+		}
+
+		public function enableSave():void {
+			btnSave.enabled = true;
+		}
+
+		public function disableSave():void {
+			btnSave.enabled = false;
+		}
+
+		public function setSaveBtnStatus(status:Boolean):void{
+			btnSave.enabled = status;
+		}
+
 		]]>
 	</mx:Script>
   	 
@@ -637,7 +664,8 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 	<mx:ControlBar id="presCtrlBar" name="presCtrlBar" width="100%" height="{CONTROL_BAR_HEIGHT}" styleName="presentationWindowControlsStyle" >
 		<mx:Button id="uploadPres" visible="false" height="30" styleName="presentationUploadButtonStyle"
     		toolTip="{ResourceUtil.getInstance().getString('bbb.presentation.uploadPresBtn.toolTip')}" 
-    	   	click="onUploadButtonClicked()" tabIndex="{baseIndex+5}"/>        	  
+    	   	click="onUploadButtonClicked()" tabIndex="{baseIndex+5}"/>
+    	<mx:Button id="btnSave" click="saveFile()" enabled="true" height="30" label="Save"/>        	  
     	<mx:Spacer width="100%" id="spacer1"/>
     	<mx:Button id="backButton" visible="false" width="45" height="30" styleName="presentationBackButtonStyle"
     		toolTip="{ResourceUtil.getInstance().getString('bbb.presentation.backBtn.toolTip')}" click="gotoPreviousSlide()"

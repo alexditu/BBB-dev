@@ -44,6 +44,9 @@ package org.bigbluebutton.modules.present.events
     	public static const UNSUPPORTED_DOCUMENT:String = "UNSUPPORTED_DOCUMENT";
     	public static const PAGE_COUNT_FAILED:String = "PAGE_COUNT_FAILED";
     	public static const PAGE_COUNT_EXCEEDED:String = "PAGE_COUNT_EXCEEDED";
+
+    	public static const START_DOWNLOAD:String = "START_DOWNLOAD";
+    	public var enableSave:Boolean;
     			
 		public var presentationName:String;
 		public var data:Object;

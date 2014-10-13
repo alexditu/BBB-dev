@@ -89,7 +89,9 @@ class PresentationService {
 		// Run conversion on another thread.
 		new Timer().runAfter(1000) 
 		{
+			documentConversionService.copyFileForDownload(uploadedPres)
 			documentConversionService.processDocument(uploadedPres)
+
 		}
 	}
  	

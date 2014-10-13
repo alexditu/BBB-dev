@@ -79,8 +79,19 @@ package org.bigbluebutton.modules.present.managers
 			mx.managers.PopUpManager.addPopUp(uploadWindow, presentWindow, true);
 		}
 		
-		public function handleCloseUploadWindow():void{
+		public function handleCloseUploadWindow(e:UploadEvent):void{
 			PopUpManager.removePopUp(uploadWindow);
+
+			if ((presentWindow != null) && (uploadWindow != null)) {
+				if (e.enableSave != null) {
+					presentWindow.setSaveBtnStatus(e.enableSave);
+				}
+				presentWindow.fileToSave = uploadWindow.fileToSaveName;
+				trace ("presentWindow.fileToSave = " + presentWindow.fileToSave);
+				trace ("uploadWindow.fileToSaveName = " + uploadWindow.fileToSaveName);
+			} else {
+				trace ("presentWindow or uploadWindow is null");
+			}
 			uploadWindow = null;
 		}
 		

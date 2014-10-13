@@ -14,8 +14,9 @@
         var readyEvent:UploadEvent = new UploadEvent(UploadEvent.PRESENTATION_READY);
         readyEvent.presentationName = data as String;
         globalDispatch.dispatchEvent(readyEvent);
-        
-        globalDispatch.dispatchEvent(new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW));
+        var e:UploadEvent = new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW);
+        e.enableSave = false;
+        globalDispatch.dispatchEvent(e);
       }
       
       private function deletePresentation():void {

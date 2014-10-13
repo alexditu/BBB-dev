@@ -38,6 +38,9 @@ package org.bigbluebutton.modules.present.business
 	import org.bigbluebutton.modules.present.events.SlideEvent;
 	import org.bigbluebutton.modules.present.events.UploadEvent;
 	import org.bigbluebutton.modules.present.managers.PresentationSlides;
+
+	import flash.net.FileReference;
+    import flash.net.URLRequest;
 	
 	public class PresentProxy
 	{
@@ -78,6 +81,18 @@ package org.bigbluebutton.modules.present.business
 		public function startUpload(e:UploadEvent):void{
 			if (uploadService == null) uploadService = new FileUploadService(host + "/bigbluebutton/presentation/upload", conference, room);
 			uploadService.upload(e.presentationName, e.fileToUpload);
+		}
+
+		public function startDownload(e:UploadEvent):void{
+			var fileRef:FileReference = new FileReference();
+			var mrequest:URLRequest = new URLRequest();
+			mrequest.url = "http://10.0.2.15:83/" + conference + "/" + room + "/" + e.presentationName;
+
+			trace("http://10.0.2.15:83/" + conference + "/" + room + "/" + e.presentationName);
+			//mrequest.url = "http://192.168.50.201:83/upFile.php";
+			fileRef.download (mrequest);
+
+			//fileRef.browse();
 		}
 		
 		/**

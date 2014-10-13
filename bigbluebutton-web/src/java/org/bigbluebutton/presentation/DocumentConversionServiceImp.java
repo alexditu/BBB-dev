@@ -24,6 +24,12 @@ import org.bigbluebutton.presentation.imp.ImageToSwfSlidesGenerationService;
 import org.bigbluebutton.presentation.imp.OfficeToPdfConversionService;
 import org.bigbluebutton.presentation.imp.PdfToSwfSlidesGenerationService;
 
+// import java.io.BufferedReader;
+// import java.io.BufferedWriter;
+// import java.io.FileReader;
+// import java.io.FileWriter;
+import java.io.*;
+
 public class DocumentConversionServiceImp implements DocumentConversionService {
 	private MessagingService messagingService;
 	private OfficeToPdfConversionService officeToPdfConversionService;
@@ -54,6 +60,63 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
 		} else {
 			// TODO: error log
 		}
+	}
+
+	public void copyFileForDownload (UploadedPresentation pres) throws IOException {
+		InputStream is = null;
+    	OutputStream os = null;
+    	File source = pres.getUploadedFile();
+    	File dir = new File ("/var/www/bigbluebutton/bbb-files/" + pres.getConference() + "/" + pres.getRoom());
+
+		if (dir.exists() == false) {
+			dir.mkdirs();
+		}
+		File dest = new File (dir, source.getName());
+
+	    try {
+	        is = new FileInputStream(source);
+	        os = new FileOutputStream(dest);
+	        byte[] buffer = new byte[1024];
+	        int length;
+	        while ((length = is.read(buffer)) > 0) {
+	            os.write(buffer, 0, length);
+	        }
+		} finally {
+	        is.close();
+	        os.close();
+	    }
+
+		// try {
+		// 	File fl = pres.getUploadedFile();
+		// 	File dir = new File ("/var/www/bigbluebutton/bbb-files/" + pres.getConference() + "/" + pres.getRoom());
+
+		// 	if (dir.exists() == false) {
+		// 		dir.mkdirs();
+		// 	}
+		// 	File outputFile = new File (dir, fl.getName());
+		// 	FileReader input = new FileReader (fl);
+
+		// 	char buf[] = new char[512];
+		// 	BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+		// 	BufferedReader br = new BufferedReader (input);
+
+		// 	int count = br.read (buf, 0, 512);
+		// 	int total = count;
+
+		// 	while (count > 0) {
+		// 		bw.write (buf, 0, count);
+		// 		count = br.read (buf, 0, 512);
+		// 		total += count;
+		// 	}
+
+		// 	bw.close();
+		// 	br.close();
+
+		// 	System.out.println ("##################### TOTAL CHARS RW: " + total);
+
+		// } catch (IOException e) {
+		// 	e.printStackTrace();
+		// }
 	}
 	
 	public void setMessagingService(MessagingService m) {

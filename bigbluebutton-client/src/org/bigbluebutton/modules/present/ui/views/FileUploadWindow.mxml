@@ -71,6 +71,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
       private var genThumbDots:String = ".";
 
       private var fileToUpload:FileReference = new FileReference();
+      public var fileToSaveName:String;
 
       override public function move(x:Number, y:Number):void
       {
@@ -161,6 +162,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
           fileTxtInput.enabled = false;
 
           presentationNamesLb.visible = false;
+          fileToSaveName = fileToUpload.name;
 
         }       		
       }
@@ -252,13 +254,23 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
         enableControls();
         okCancelBtn.label = "Ok";
         okCancelBtn.visible = true;
-        globalDispatch.dispatchEvent(new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW));
+        var e:UploadEvent = new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW);
+        e.enableSave = false;
+        globalDispatch.dispatchEvent(e);
       }
 
       private function convertSuccess(e:UploadEvent):void{
         okCancelBtn.label = ResourceUtil.getInstance().getString('bbb.presentation.ok');
         okCancelBtn.visible = true;
-        globalDispatch.dispatchEvent(new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW));
+        var e:UploadEvent = new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW);
+        e.enableSave = true;
+        globalDispatch.dispatchEvent(e);
+      }
+
+      private function okCancelBtnAction():void {
+        var e:UploadEvent = new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW);
+        e.enableSave = false;
+        globalDispatch.dispatchEvent(e);
       }
 
       //Unlike UploadProgress, this event comes from the PresentSOService, not the UploadService
@@ -302,7 +314,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
     <mx:Canvas width="100%">
       <mx:Button id="okCancelBtn" label="{ResourceUtil.getInstance().getString('bbb.fileupload.okCancelBtn')}"
                  styleName="presentationUploadCancelButtonStyle" right="5" top="5"
-                 click="globalDispatch.dispatchEvent(new UploadEvent(UploadEvent.CLOSE_UPLOAD_WINDOW))"
+                 click="okCancelBtnAction()"
                  toolTip="{ResourceUtil.getInstance().getString('bbb.fileupload.okCancelBtn.toolTip')}"/>
     </mx:Canvas>	
   </mx:VBox>

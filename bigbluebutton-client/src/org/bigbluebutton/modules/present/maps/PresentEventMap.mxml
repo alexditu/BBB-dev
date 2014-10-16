@@ -64,9 +64,17 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 	<EventHandlers type="{UploadEvent.OPEN_UPLOAD_WINDOW}" >
 		<MethodInvoker generator="{PresentManager}" method="handleOpenUploadWindow" arguments="{event}" />
 	</EventHandlers>
-	
+
 	<EventHandlers type="{UploadEvent.CLOSE_UPLOAD_WINDOW}" >
 		<MethodInvoker generator="{PresentManager}" method="handleCloseUploadWindow" arguments="{event}" />
+	</EventHandlers>
+	
+	<EventHandlers type="{UploadEvent.OPEN_DOWNLOAD_WINDOW}" >
+		<MethodInvoker generator="{PresentManager}" method="handleOpenDownloadWindow" arguments="{event}" />
+	</EventHandlers>
+
+	<EventHandlers type="{UploadEvent.CLOSE_DOWNLOAD_WINDOW}" >
+		<MethodInvoker generator="{PresentManager}" method="handleCloseDownloadWindow" arguments="{event}" />
 	</EventHandlers>
 		
 	<EventHandlers type="{UploadEvent.START_UPLOAD}">
@@ -75,6 +83,10 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 	<EventHandlers type="{UploadEvent.START_DOWNLOAD}">
 		<MethodInvoker generator="{PresentProxy}" method="startDownload" arguments="{event}" />
+	</EventHandlers>
+
+	<EventHandlers type="{UploadEvent.PREPARE_DOWNLOAD}">
+		<MethodInvoker generator="{PresentProxy}" method="prepareDownload" arguments="{event}" />
 	</EventHandlers>
 	
 	<EventHandlers type="{PresenterCommands.GOTO_SLIDE}" >

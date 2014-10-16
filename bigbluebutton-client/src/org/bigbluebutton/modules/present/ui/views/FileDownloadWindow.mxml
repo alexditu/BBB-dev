@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<mx:TitleWindow xmlns:mx="http://www.adobe.com/2006/mxml" 
+	xmlns:mate="http://mate.asfusion.com/"
+      x="168" y="86" layout="absolute" width="700" height="410" styleName="presentationFileUploadWindowStyle"
+      initialize="initData();">
+
+      <mx:Script>
+    <![CDATA[
+      import org.bigbluebutton.common.LogUtil;
+      import com.asfusion.mate.events.Dispatcher;			
+      import mx.collections.*;
+      import mx.events.FlexEvent;
+      import mx.events.ValidationResultEvent;
+      import mx.managers.PopUpManager;
+      import mx.utils.*;
+      import mx.validators.*;			
+      import org.bigbluebutton.common.Images;
+      import org.bigbluebutton.modules.present.events.RemovePresentationEvent;
+      import org.bigbluebutton.modules.present.events.UploadEvent;
+      import org.bigbluebutton.util.i18n.ResourceUtil;
+
+      import flash.events.*;
+
+      public var filesToDownload:ArrayCollection;
+      private var globalDispatch:Dispatcher = new Dispatcher();
+
+      private function initData():void {
+      	/*
+      	ac = new ArrayCollection();
+      	ac.addItem ("Item 1");
+      	ac.addItem ("Item 2");
+      	ac.addItem ("Item 3");
+      	*/
+
+      	list.dataProvider = filesToDownload;
+
+
+      }
+
+      public function selectionChangingHandler(e:Event):void {
+
+      	trace ("Selected: " + e.currentTarget.selectedIndex + " -> " + list.dataProvider.getItemAt(e.currentTarget.selectedIndex));
+      	var ev:UploadEvent = new UploadEvent(UploadEvent.START_DOWNLOAD);
+        ev.enableSave = false;
+        ev.presentationName = list.dataProvider.getItemAt(e.currentTarget.selectedIndex);
+        globalDispatch.dispatchEvent(ev);
+      }
+
+      public function closeWindow():void {
+      	var e:UploadEvent = new UploadEvent(UploadEvent.CLOSE_DOWNLOAD_WINDOW);
+        globalDispatch.dispatchEvent(e);
+      }
+
+
+    ]]>
+
+    </mx:Script>
+
+      <mx:VBox width="100%" height="100%">
+      <mx:List id="list" width="90%" height="120" left="5" top="5" alternatingItemColors="[#EFEFEF, #FEFEFE]" allowMultipleSelection="false" 
+      		change="selectionChangingHandler(event)" />
+      <mx:Button id="closeBtn" label="Close" click="closeWindow()" />
+      </mx:VBox>
+
+
+
+</mx:TitleWindow> 

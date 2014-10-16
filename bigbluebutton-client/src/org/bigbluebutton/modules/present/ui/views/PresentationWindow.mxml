@@ -630,7 +630,7 @@ with BigBlueButton; if not, see <http://www.gnu.org/licenses/>.
 
 		public function saveFile():void {
 			trace ("Save file btn clicked! FileToSave = " + fileToSave);
-			var dEvent:UploadEvent = new UploadEvent(UploadEvent.START_DOWNLOAD);
+			var dEvent:UploadEvent = new UploadEvent(UploadEvent.PREPARE_DOWNLOAD);
 			trace ("debug 1");
 	        dEvent.presentationName = fileToSave;
 	        trace ("debug 2");

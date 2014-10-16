@@ -36,12 +36,15 @@ package org.bigbluebutton.modules.present.managers
 	import org.bigbluebutton.modules.present.events.UploadEvent;
 	import org.bigbluebutton.modules.present.ui.views.FileUploadWindow;
 	import org.bigbluebutton.modules.present.ui.views.PresentationWindow;
+
+	import org.bigbluebutton.modules.present.ui.views.FileDownloadWindow;
 	
 	public class PresentManager
 	{
 		private var globalDispatcher:Dispatcher;
 		private var uploadWindow:FileUploadWindow;
 		private var presentWindow:PresentationWindow;
+		private var downloadWindow:FileDownloadWindow;
 		
 		//format: presentationNames = [{label:"00"}, {label:"11"}, {label:"22"} ];
 		[Bindable] public var presentationNames:ArrayCollection = new ArrayCollection();
@@ -77,6 +80,21 @@ package org.bigbluebutton.modules.present.managers
 			uploadWindow.presentationNamesAC = presentationNames;
 			uploadWindow.maxFileSize = e.maxFileSize;
 			mx.managers.PopUpManager.addPopUp(uploadWindow, presentWindow, true);
+		}
+
+		public function handleOpenDownloadWindow (e:UploadEvent):void {
+			trace ("In handleOpenDownloadWindow1");
+			downloadWindow = new FileDownloadWindow();
+			downloadWindow.filesToDownload = e.filesToDownload;
+			trace ("In handleOpenDownloadWindow2");
+			mx.managers.PopUpManager.addPopUp(downloadWindow, presentWindow, true);
+			trace ("In handleOpenDownloadWindow3");
+		}
+
+		public function handleCloseDownloadWindow(e:UploadEvent):void {
+			trace ("In handleCloseDownloadWindow");
+			PopUpManager.removePopUp(downloadWindow);
+			downloadWindow = null;
 		}
 		
 		public function handleCloseUploadWindow(e:UploadEvent):void{

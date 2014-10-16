@@ -117,6 +117,27 @@ public class DocumentConversionServiceImp implements DocumentConversionService {
 		// } catch (IOException e) {
 		// 	e.printStackTrace();
 		// }
+
+		File folder = new File("/var/www/bigbluebutton/bbb-files/" + pres.getConference() + "/" + pres.getRoom());
+		File[] listOfFiles = folder.listFiles();
+		String filenames = "<fisiere>\n";
+
+	    for (int i = 0; i < listOfFiles.length; i++) {
+	    	if (!listOfFiles[i].getName().equals("files.txt")) {
+	    		filenames += "<file>" + listOfFiles[i].getName() + "</file>\n";
+	    	}
+	    }
+	    filenames += "</fisiere>";
+	    try {
+		    File outFile = new File (dir, "files.txt");
+		    BufferedWriter bw2 = new BufferedWriter (new FileWriter(outFile));
+		    bw2.write (filenames, 0, filenames.length());
+
+		    bw2.close();
+		} catch (IOException e) {
+			System.err.println ("[ALEX]: ERRROR  WRITING FILE!!!!!!!!!");
+			e.printStackTrace();
+		}
 	}
 	
 	public void setMessagingService(MessagingService m) {

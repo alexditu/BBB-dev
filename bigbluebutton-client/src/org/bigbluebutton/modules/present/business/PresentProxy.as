@@ -41,6 +41,11 @@ package org.bigbluebutton.modules.present.business
 
 	import flash.net.FileReference;
     import flash.net.URLRequest;
+    import flash.net.URLRequestMethod;
+    import flash.events.*; 
+    import flash.net.URLLoader; 
+    import flash.net.URLLoaderDataFormat;
+    import mx.collections.*;
 	
 	public class PresentProxy
 	{
@@ -83,18 +88,75 @@ package org.bigbluebutton.modules.present.business
 			uploadService.upload(e.presentationName, e.fileToUpload);
 		}
 
-		public function startDownload(e:UploadEvent):void{
+		public function startDownload (e:UploadEvent):void {
+			trace ("In downloadFile");
 			var fileRef:FileReference = new FileReference();
 			var mrequest:URLRequest = new URLRequest();
-			mrequest.url = "http://10.0.2.15:83/" + conference + "/" + room + "/" + e.presentationName;
+			mrequest.url = "http://192.168.50.163:83/" + conference + "/" + room + "/" + e.presentationName;
 
-			trace("http://10.0.2.15:83/" + conference + "/" + room + "/" + e.presentationName);
+			trace("http://192.168.50.163:83/" + conference + "/" + room + "/" + e.presentationName);
+			fileRef.download (mrequest);
+		}
+
+		public var urlData:String;
+		public function prepareDownload (e:UploadEvent):void{
+			/*
+			var fileRef:FileReference = new FileReference();
+			var mrequest:URLRequest = new URLRequest();
+			mrequest.url = "http://192.168.50.163:83/" + conference + "/" + room + "/" + e.presentationName;
+
+			trace("http://192.168.50.163:83/" + conference + "/" + room + "/" + e.presentationName);
 			//mrequest.url = "http://192.168.50.201:83/upFile.php";
 			fileRef.download (mrequest);
 
 			//fileRef.browse();
+			*/
+
+			var url:String = "http://192.168.50.163:83/" + conference + "/" + room + "/" + "files.txt";
+			trace ("Getting files.txt from:");
+			trace (url);
+			var dwreq:URLRequest = new URLRequest(url);
+			var loader:URLLoader = new URLLoader();
+			loader.dataFormat = URLLoaderDataFormat.TEXT;
+			loader.addEventListener(Event.COMPLETE, completeDwHandler);
+			loader.load(dwreq);
 		}
-		
+		public var globalDispatch:Dispatcher = new Dispatcher();
+		public function completeDwHandler(e:Event):void {
+			var loader:URLLoader = URLLoader(e.target);
+			trace ("[ALEX]: downloaded data: " + loader.data);
+			var filesXML:XML = XML(loader.data);
+			urlData = loader.data;
+
+			var filenames:ArrayCollection = new ArrayCollection();
+			for each (var prop:XML in filesXML.file) {
+				trace ("FILES: " + prop.toString());
+				filenames.addItem (prop.toString());
+			}
+
+			var ev:UploadEvent = new UploadEvent(UploadEvent.OPEN_DOWNLOAD_WINDOW);
+	        ev.enableSave = false;
+	        ev.maxFileSize = 200;
+	        ev.filesToDownload = filenames;
+	        globalDispatch.dispatchEvent(ev);
+
+	        trace ("Exiting completeDwHandler");
+
+			/* Apend data: 
+				var myString1:String = 'Hello World1';
+				var myString2:String = 'Hello World2';
+				var myString3:String = 'Hello World3';
+				var myXML:XML = <lista><file /></lista>;
+				myXML.appendChild(myString1);
+				myXML.appendChild(myString2);
+				myXML.appendChild(myString3);
+				//test
+				trace("XML: " + myXML);
+			*/
+
+		}
+
+
 		/**
 		 * To to the specified slide 
 		 * @param e - The event which holds the slide number

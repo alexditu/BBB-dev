@@ -20,6 +20,7 @@ package org.bigbluebutton.modules.present.events
 {
 	import flash.events.Event;
 	import flash.net.FileReference;
+	import mx.collections.*;
 	
 	public class UploadEvent extends Event {
     public static const OPEN_EXTERNAL_UPLOAD_WINDOW:String = "OPEN_EXTERNAL_UPLOAD_WINDOW";
@@ -46,7 +47,12 @@ package org.bigbluebutton.modules.present.events
     	public static const PAGE_COUNT_EXCEEDED:String = "PAGE_COUNT_EXCEEDED";
 
     	public static const START_DOWNLOAD:String = "START_DOWNLOAD";
+    	public static const PREPARE_DOWNLOAD:String = "PREPARE_DOWNLOAD";
     	public var enableSave:Boolean;
+
+    	public static const OPEN_DOWNLOAD_WINDOW:String = "OPEN_DOWNLOAD_WINDOW";
+
+    	public static const CLOSE_DOWNLOAD_WINDOW:String = "CLOSE_DOWNLOAD_WINDOW";
     			
 		public var presentationName:String;
 		public var data:Object;
@@ -56,6 +62,8 @@ package org.bigbluebutton.modules.present.events
 		public var percentageComplete:Number;
 		public var maximumSupportedNumberOfSlides:int;
 		public var maxFileSize:Number;
+
+		public var filesToDownload:ArrayCollection;
 		
 		public function UploadEvent(type:String) {
 			super(type, true, false);
